@@ -1,4 +1,4 @@
-package com.github.shivawu.sbt.maven
+package com.github.spockz.sbt.maven
 
 import java.io.File
 import xml._
@@ -187,7 +187,17 @@ class Pom private (val pomFile: File) { self =>
       base = new File(baseDir)
     ).settings(metadata: _*)
     val withSubprojs = (bare /: allModules) (_ aggregate _)
-    val withInterDeps = (withSubprojs /: indeps) (_ dependsOn _)
+    val withInterDeps = (withSubprojs /: indeps) {
+      case (configged, project) =>
+        val hasTestJarDependency =
+          dependencies.list.filter(_.name == project.id).exists(_._type == Some("test-jar"))
+        val configuration =
+          if (hasTestJarDependency)
+            "compile->compile;test->compile;test->test"
+          else
+            "compile->compile;test->compile"
+        configged dependsOn (project % configuration)
+    }
     withInterDeps.settings(
       libraryDependencies ++= exdeps map (_.toDependency),
       resolvers ++= repositories.map(r => r._1 at r._2)
@@ -206,6 +216,7 @@ class Pom private (val pomFile: File) { self =>
     val version = getText(node \ "version").map(resolveProperty _).orElse(fallback.map(_.version))
     require(version != None, "version is empty, even with parent's dependency management")
     val scope = getText(node \ "scope").map(resolveProperty _).orElse(fallback.flatMap(_.scope))
+    val _type = getText(node \ "type").map(resolveProperty _).orElse(fallback.flatMap(_._type))
     val classifier = (node \ "classifier").map(_.text).toList
     val exclusions = (node \ "exclusions" \ "exclusion").map{ex =>
       ((ex \ "groupId").text, (ex \ "artifactId").text)
@@ -214,7 +225,7 @@ class Pom private (val pomFile: File) { self =>
       case exs => exs
     }
 
-    new PomDependency(groupId, name, version.get, scope, classifier, exclusions)
+    new PomDependency(groupId, name, version.get, scope, classifier, exclusions, _type)
   }
 
   private def resolveProperty(key: String) = {

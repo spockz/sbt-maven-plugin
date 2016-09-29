@@ -1,4 +1,4 @@
-package com.github.shivawu.sbt.maven
+package com.github.spockz.sbt.maven
 
 object PathUtil {
 	import java.io.File

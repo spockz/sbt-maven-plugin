@@ -1,7 +1,8 @@
-package com.github.shivawu.sbt.maven.property
+package com.github.spockz.sbt.maven.property
+
+import com.github.spockz.sbt.maven.MavenSettings
 
 import scala.xml._
-import com.github.shivawu.sbt.maven.MavenSettings
 import sbt._
 
 class PomProperty(

@@ -2,9 +2,9 @@ sbtPlugin := true
 
 name := "sbt-maven-plugin"
 
-organization := "com.github.shivawu"
+organization := "com.github.spockz"
 
-version := "0.1.3-SNAPSHOT"
+version := "0.2.0-SNAPSHOT"
 
 publishMavenStyle := true
 
@@ -28,14 +28,14 @@ publishTo <<= version { (v: String) =>
     Some("releases"  at nexus + "service/local/staging/deploy/maven2")
 }
 
-homepage := Some(url("https://github.com/shivawu/sbt-maven-plugin"))
+homepage := Some(url("https://github.com/spockz/sbt-maven-plugin"))
 
 licenses := Seq("Apache 2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0.html"))
 
 pomExtra := (
   <scm>
     <url>git@github.com:shivawu/sbt-maven-plugin.git</url>
-    <connection>scm:git:git@github.com:shivawu/sbt-maven-plugin.git</connection>
+    <connection>scm:git:git@github.com:spockz/sbt-maven-plugin.git</connection>
   </scm>
   <developers>
     <developer>

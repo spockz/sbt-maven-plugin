@@ -1,4 +1,4 @@
-package com.github.shivawu.sbt.maven
+package com.github.spockz.sbt.maven
 
 import sbt._
 
@@ -8,15 +8,20 @@ class PomDependency(
   val version: String, 
   val scope: Option[String] = None,
   val classifier: Seq[String] = Nil,
-  val exclusions: Seq[(String, String)] = Nil
+  val exclusions: Seq[(String, String)] = Nil,
+  val _type: Option[String]
 
 ) {
   def id = groupId + ":" + name
 
   def toDependency = {
     val d = 
-      if (scope == None) groupId % name % version
-      else groupId % name % version % scope.get
+      if (scope.isEmpty) groupId % name % version
+      else {
+        val dep =  groupId % name % version % scope.get
+        if (_type == Some("test-jar")) dep % "test->test"
+        else dep
+      }
     val classified = (d /: classifier)((d, clf) => d classifier clf)
     (classified /: exclusions){
       case (dep, (exOrg, exName)) => dep.exclude(exOrg, exName)
