@@ -1,3 +1,6 @@
+/**
+ * Copyright 2016 Alessandro Vermeulen
+ */
 package com.github.spockz.sbt.maven
 
 import java.io.File

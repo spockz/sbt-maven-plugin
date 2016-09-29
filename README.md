@@ -110,6 +110,7 @@ Features
 Licenses
 --------
 Copyright 2012 Shiva Wu
+Copyright 2016 Alessandro Vermeulen
 
 Licensed under _Apache License, Version 2.0_. You may obtain a copy of the license in the _LICENSE_ file, or at:
 

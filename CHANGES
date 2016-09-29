@@ -1,0 +1,9 @@
+#
+# Copyright 2016 Alessandro Vermeulen
+#
+
+0.2.0
+-----
+
+* Forked from shivawu/sbt-maven-plugin and took ownership
+* Added test-jar support
