@@ -4,8 +4,6 @@ name := "sbt-maven-plugin"
 
 organization := "com.github.spockz"
 
-version := "0.2.0-SNAPSHOT"
-
 publishMavenStyle := true
 
 scalaVersion := "2.10.3"
