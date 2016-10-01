@@ -32,7 +32,7 @@ licenses := Seq("Apache 2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0.
 
 pomExtra :=
   <scm>
-    <url>git@github.com:shivawu/sbt-maven-plugin.git</url>
+    <url>git@github.com:spockz/sbt-maven-plugin.git</url>
     <connection>scm:git:git@github.com:spockz/sbt-maven-plugin.git</connection>
   </scm>
   <developers>
