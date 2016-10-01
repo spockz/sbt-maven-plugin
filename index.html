@@ -1,0 +1,163 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Sbt-maven-plugin by spockz</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-dark.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Sbt-maven-plugin</h1>
+        <p>A sbt plugin which reads project definitions from pom.xml</p>
+        <p class="view"><a href="https://github.com/spockz/sbt-maven-plugin">View the Project on GitHub <small>spockz/sbt-maven-plugin</small></a></p>
+        <ul>
+          <li><a href="https://github.com/spockz/sbt-maven-plugin/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/spockz/sbt-maven-plugin/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/spockz/sbt-maven-plugin">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a id="sbt-maven-plugin" class="anchor" href="#sbt-maven-plugin" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>sbt-maven-plugin</h1>
+
+<p>This is a fork from the plugin by <a href="https://github.com/shivawu/sbt-maven-plugin">shivawu</a>.</p>
+
+<h3>
+<a id="you-should-fall-in-love-with-it" class="anchor" href="#you-should-fall-in-love-with-it" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>You should fall in love with it</h3>
+
+<ul>
+<li>Seamless mirgation from Maven to SBT, no rewriting in <code>build.sbt</code>, just import your <code>pom.xml</code>.<br>
+BTW, a single-module project means you don't have to do <strong>anything</strong> except adding the plugin</li>
+<li>Maven with SBT's awesome REPL</li>
+<li>Use SBT without losing the richness of Maven's plugins</li>
+</ul>
+
+<h2>
+<a id="why-made-this" class="anchor" href="#why-made-this" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Why made this?</h2>
+
+<p>Maven is great stuff, while its choice of XML as its descriptor doomed that it's not good at describing <em>behaviors</em>. 
+Maven's solution is using plugins. Maven has so many plugins.</p>
+
+<p>As more expressive language coming on stage, like Groovy or Scala, programmers can use predefined DSL to better define <em>behaviors</em>.
+By using the neat DSLs which Gradle or SBT provides, we can easily implement build system <em>tasks</em>.</p>
+
+<p>How about, <code>pom.xml</code> for the model, and <code>build.sbt</code> for the behavior? Sounds great?
+Also, <code>pom.xml</code> and SBT's cool REPL at the same time!</p>
+
+<p>I myself, wrote this plugin because Intelij IDEA has great Maven support, while plugins for others(Gradle, SBT) are all
+3rd-party. And let's be honest, they suck. If you're using SBT with IDEA, you have to reload the project, whenever your
+project definition changes, but with Maven, it's just a fast update. </p>
+
+<p>By using this plugin, you can just update your dependencies(or whatever) in <code>pom.xml</code>, and <code>reload</code> on your SBT console.
+Cool!</p>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h2>
+
+<h3>
+<a id="configuration" class="anchor" href="#configuration" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Configuration</h3>
+
+<p>Add the following to <code>project/plugins.sbt</code></p>
+
+<div class="highlight highlight-source-scala"><pre>addSbtPlugin(<span class="pl-s"><span class="pl-pds">"</span>com.github.shivawu<span class="pl-pds">"</span></span> <span class="pl-k">%</span> <span class="pl-s"><span class="pl-pds">"</span>sbt-maven-plugin<span class="pl-pds">"</span></span> <span class="pl-k">%</span> <span class="pl-s"><span class="pl-pds">"</span>0.1.2<span class="pl-pds">"</span></span>)</pre></div>
+
+<p>Or go the hard way, add the following code to <code>project/project/Plugins.scala</code></p>
+
+<div class="highlight highlight-source-scala"><pre><span class="pl-k">import</span> <span class="pl-v">sbt.</span><span class="pl-v">_</span>
+<span class="pl-k">import</span> <span class="pl-v">Keys.</span><span class="pl-v">_</span>
+
+<span class="pl-k">object</span> <span class="pl-en">Plugins</span> <span class="pl-k">extends</span> <span class="pl-e">Build</span> {
+  <span class="pl-k">lazy</span> <span class="pl-k">val</span> <span class="pl-en">root</span> <span class="pl-k">=</span> <span class="pl-en">Project</span>(<span class="pl-s"><span class="pl-pds">"</span>root<span class="pl-pds">"</span></span>, file(<span class="pl-s"><span class="pl-pds">"</span>.<span class="pl-pds">"</span></span>)).settings(
+    addSbtPlugin(<span class="pl-s"><span class="pl-pds">"</span>com.github.shivawu<span class="pl-pds">"</span></span> <span class="pl-k">%</span> <span class="pl-s"><span class="pl-pds">"</span>sbt-maven-plugin<span class="pl-pds">"</span></span> <span class="pl-k">%</span> <span class="pl-s"><span class="pl-pds">"</span>0.1.2<span class="pl-pds">"</span></span>)
+  )
+}</pre></div>
+
+<h3>
+<a id="single-module-project" class="anchor" href="#single-module-project" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Single module project</h3>
+
+<p><strong>See the configuration section above? Do that, and done.</strong> Just make sure there's a <code>pom.xml</code> in your current folder.</p>
+
+<p>I assume that if you're using this plugin, you will assure that <code>pom.xml</code> is at the same 
+folder with <code>project</code> or <code>build.sbt</code>. So, this plugin is designed that minimal effort is needed for users. </p>
+
+<p>This is achieved by override the <code>settings</code> field in <code>Plugin</code> trait and this settings will be add to all projects' settings automatically.</p>
+
+<p>This default behavior will be disabled <strong>only when</strong> there is module definition in <code>pom.xml</code> 
+or any <code>MavenBuild</code> is instantiated from <code>.scala</code> build definition. (Here we took the advantages of <code>.scala</code> def is executed before importing <code>.sbt</code> def)</p>
+
+<h3>
+<a id="multi-module-project" class="anchor" href="#multi-module-project" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Multi module project</h3>
+
+<p>Due to <code>sbt</code>'s design, multi-module project can only be defined in <code>project/???Build.scala</code>. Here, we use these settings:</p>
+
+<div class="highlight highlight-source-scala"><pre><span class="pl-k">import</span> <span class="pl-v">com.github.shivawu.sbt.maven.</span><span class="pl-v">MavenBuild </span><span class="pl-c">// Sorry for the long package name :-(</span>
+
+<span class="pl-k">object</span> <span class="pl-en">MyBuild</span> <span class="pl-k">extends</span> <span class="pl-e">MavenBuild</span> {
+    <span class="pl-c">// "*" is a selector which selects all modules</span>
+    project(<span class="pl-s"><span class="pl-pds">"</span>*<span class="pl-pds">"</span></span>)(
+        <span class="pl-c">// Note that these properties like compile source, target, encoding </span>
+        <span class="pl-c">// are treated as common properties. So set a pom.xml property </span>
+        <span class="pl-c">// like "&lt;maven.compiler.source&gt;1.6&lt;/maven.compiler.source&gt;" also works.</span>
+        javacOptions <span class="pl-k">++</span><span class="pl-k">=</span> <span class="pl-en">Seq</span>(<span class="pl-s"><span class="pl-pds">"</span>-source<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>1.6<span class="pl-pds">"</span></span>)
+    )
+
+    <span class="pl-c">// Here "a" is a project id, which is set to the artifactId</span>
+    <span class="pl-c">// BUT! SBT doesn't allow "." in the id, so the "." is replaced with "_"</span>
+    project(<span class="pl-s"><span class="pl-pds">"</span>a<span class="pl-pds">"</span></span>) (
+        <span class="pl-c">// Project specific settings here</span>
+    )
+
+    <span class="pl-c">// Note that you can select multiple(but not all) modules using the "|" operator</span>
+    project(<span class="pl-s"><span class="pl-pds">"</span>b<span class="pl-pds">"</span></span> <span class="pl-k">|</span> <span class="pl-s"><span class="pl-pds">"</span>c<span class="pl-pds">"</span></span>) (
+        assemblySettings <span class="pl-k">++</span> <span class="pl-en">Seq</span>(
+            test in assembly <span class="pl-k">:</span><span class="pl-k">=</span> {}
+        )
+    <span class="pl-k">:</span>_<span class="pl-k">*</span>) <span class="pl-c">// Finally convert it to a Setting[_]*</span>
+}</pre></div>
+
+<h2>
+<a id="features" class="anchor" href="#features" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Features</h2>
+
+<ul>
+<li>Project basic info(groupId, artifactId, version)</li>
+<li>Neat API for both single module and multi module project(See <em>Usage</em> section)</li>
+<li>Dependencies and dependencies management from parent pom, including classifier, scope and exclusion</li>
+<li>Multiple module project with inheritance and inter-project dependencies(module <code>a</code> depends on module <code>b</code>)</li>
+<li>Properties resolution and common properties support(encoding, source level, target level, for now)</li>
+<li>POM extra info(licenses, developers, ...)</li>
+<li>Set scala version according to dependency declarsion</li>
+<li>Read maven global repository settings from <code>~/.m2/settings.xml</code>
+</li>
+</ul>
+
+<h2>
+<a id="licenses" class="anchor" href="#licenses" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Licenses</h2>
+
+<p>Copyright 2012 Shiva Wu
+Copyright 2016 Alessandro Vermeulen</p>
+
+<p>Licensed under <em>Apache License, Version 2.0</em>. You may obtain a copy of the license in the <em>LICENSE</em> file, or at:</p>
+
+<p><a href="">http://www.apache.org/licenses/LICENSE-2.0</a></p>
+
+<p>Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.</p>
+      </section>
+    </div>
+    <footer>
+      <p>Project maintained by <a href="https://github.com/spockz">spockz</a></p>
+      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+    </footer>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
