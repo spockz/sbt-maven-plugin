@@ -32,15 +32,40 @@ homepage := Some(url("https://github.com/spockz/sbt-maven-plugin"))
 
 licenses := Seq("Apache 2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0.html"))
 
-pomExtra := (
+pomExtra :=
+  <url>https://github.com/spockz/sbt-maven-plugin</url>
+  <licenses>
+    <license>
+      <name>Apache 2</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    </license>
+  </licenses>
   <scm>
     <url>git@github.com:shivawu/sbt-maven-plugin.git</url>
     <connection>scm:git:git@github.com:spockz/sbt-maven-plugin.git</connection>
   </scm>
   <developers>
     <developer>
-      <id>shivawu</id>
-      <name>Shiva Wu</name>
+      <id>spockz</id>
+      <name>Alessandro Vermeulen</name>
     </developer>
   </developers>
+
+
+
+import ReleaseTransformations._
+
+releaseProcess := Seq[ReleaseStep](
+  checkSnapshotDependencies,
+  inquireVersions,
+  runClean,
+  runTest,
+  setReleaseVersion,
+  commitReleaseVersion,
+  tagRelease,
+  ReleaseStep(action = Command.process("publishSigned", _), enableCrossBuild = true),
+  setNextVersion,
+  commitNextVersion,
+  ReleaseStep(action = Command.process("sonatypeReleaseAll", _), enableCrossBuild = true),
+  pushChanges
 )
