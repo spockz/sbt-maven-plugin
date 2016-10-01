@@ -31,7 +31,6 @@ homepage := Some(url("https://github.com/spockz/sbt-maven-plugin"))
 licenses := Seq("Apache 2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0.html"))
 
 pomExtra :=
-  <url>https://github.com/spockz/sbt-maven-plugin</url>
   <licenses>
     <license>
       <name>Apache 2</name>
